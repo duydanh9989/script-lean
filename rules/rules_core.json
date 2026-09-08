@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "google-analytics\\.com|googletagmanager\\.com|analytics\\.google\\.com|connect\\.facebook\\.net|pixel\\.facebook\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "static\\.hotjar\\.com|script\\.hotjar\\.com|cdn\\.mxpnl\\.com|mixpanel\\.com|cdn\\.segment\\.com|api\\.segment\\.io",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "cdn\\.amplitude\\.com|api\\.amplitude\\.com|plausible\\.io|analytics\\.tiktok\\.com|clarity\\.ms",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "mc\\.yandex\\.ru|bat\\.bing\\.com|snap\\.licdn\\.com|static\\.ads-twitter\\.com|analytics\\.twitter\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "rum\\.browser-intake|datadoghq\\.com|js\\.sentry-cdn\\.com|sentry\\.io|fullstory\\.com|rs\\.fullstory\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "heap-analytics\\.com|heapanalytics\\.com|crazyegg\\.com|script\\.crazyegg\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "pagead2\\.googlesyndication\\.com|adservice\\.google\\.com|doubleclick\\.net|googleadservices\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "amazon-adsystem\\.com|aax\\.amazon-adsystem\\.com|ct\\.pinterest\\.com|sc-static\\.net|alb\\.reddit\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "regexFilter": "beap\\.gemini\\.yahoo\\.com|adtech\\.yahooinc\\.com|ads\\.yahoo\\.com|geo\\.yahoo\\.com",
+      "resourceTypes": [
+        "script",
+        "image",
+        "sub_frame",
+        "xmlhttprequest",
+        "ping",
+        "other"
+      ]
+    }
+  }
+]

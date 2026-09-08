@@ -1,0 +1,2 @@
+61a00846af9f879462dc39109e09fd94  script-lean-2.5.2.zip
+8d5cef567cae9c8e1a2f257c3753a767  script-lean-2.5.2.crx

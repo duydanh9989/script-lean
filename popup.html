@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Script Lean</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Top Bar: Current Host & Quick Status -->
+    <header class="topbar">
+      <div class="target-scope">
+        <span class="scope-dot" aria-hidden="true"></span>
+        <span class="scope-host" id="site-domain">—</span>
+      </div>
+      <div class="topbar-actions">
+        <a class="icon-btn icon-link" id="link-github" href="https://github.com/duydanh9989/script-lean" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub repository">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+        <button class="icon-btn" id="btn-badge" title="Toggle JS counter badge" aria-label="Toggle JS counter badge" aria-pressed="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9h16M4 15h16M9 4 7 20M17 4l-2 16"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-add" title="New Script" aria-label="New Script">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Engine Banner (Shown only when the userScripts toggle is off) -->
+    <div id="engine-banner" class="notice-banner hidden">
+      <span class="notice-icon">!</span>
+      <span id="engine-msg" class="notice-text">Custom JS needs 'Allow User Scripts'</span>
+      <button id="btn-engine-fix" class="notice-btn" type="button">Open</button>
+      <button id="btn-engine-dismiss" class="notice-x" type="button" aria-label="Dismiss">✕</button>
+    </div>
+
+    <!-- Presets Bar: Modular options for AdBlockBench & Bypass -->
+    <section class="presets-bar">
+      <button class="preset-chip" id="filter-ads" data-filter="ads" title="Toggle ad blocking script">
+        <span class="preset-name">Ads</span>
+        <span class="preset-state" id="status-ads">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-analytics" data-filter="analytics" title="Toggle analytics blocking script">
+        <span class="preset-name">Analytics</span>
+        <span class="preset-state" id="status-analytics">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-surrogates" data-filter="surrogates" title="Toggle surrogate stubs">
+        <span class="preset-name">Surrogates</span>
+        <span class="preset-state" id="status-surrogates">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-bypass" data-filter="bypass" title="Bypass Bot Checks & News Paywalls">
+        <span class="preset-name">Bypass</span>
+        <span class="preset-state" id="status-bypass">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-fingerprint" data-filter="fingerprint" title="Anti-Fingerprint Shield (Canvas, WebGL, Audio, Hardware)">
+        <span class="preset-name">Anti-FP</span>
+        <span class="preset-state" id="status-fingerprint">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-privacy" data-filter="privacy" title="Privacy GPC, Beacon & Topics Guard">
+        <span class="preset-name">Privacy</span>
+        <span class="preset-state" id="status-privacy">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-video" data-filter="video" title="Video Pre-Roll & Eval Suppression">
+        <span class="preset-name">Video</span>
+        <span class="preset-state" id="status-video">OFF</span>
+      </button>
+      <button class="preset-chip" id="filter-aggressive" data-filter="aggressive" title="Aggressive Ads — broader patterns, may over-match (site function not guaranteed)">
+        <span class="preset-name">Aggressive</span>
+        <span class="preset-state" id="status-aggressive">OFF</span>
+      </button>
+    </section>
+
+    <!-- User Scripts Collection -->
+    <main class="script-section">
+      <div class="section-label">SCRIPTS</div>
+      <div id="script-list" class="script-list">
+        <div id="empty-state" class="empty-state">No scripts registered. Press ＋ to create.</div>
+      </div>
+    </main>
+
+    <!-- Filter Lists Collapsible / Quick Subscriptions -->
+    <section class="rulesets-section">
+      <details class="rulesets-details">
+        <summary class="rulesets-summary">
+          <span class="section-label">FILTER LISTS</span>
+          <button class="icon-btn-subtle" id="btn-sync-lists" title="Sync All Lists">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          </button>
+        </summary>
+        <div class="rulesets-content">
+          <div class="filterlist-add-row">
+            <input type="text" id="filterlist-url" class="input-flat" placeholder="URL: https://.../list.txt">
+            <button class="btn-flat" id="btn-add-list">Add</button>
+          </div>
+          <div class="custom-rules-row">
+            <label class="custom-rules-label" for="custom-rules">CUSTOM FILTERS (one per line)</label>
+            <textarea id="custom-rules" class="custom-rules-area" rows="4" spellcheck="false"
+              placeholder="||ads.example.com^&#10;@@||mysite.com^ (allow)"></textarea>
+            <button class="btn-flat" id="btn-save-rules">Apply Rules</button>
+          </div>
+          <div id="filterlist-items" class="filterlist-items"></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Full In-Place Script Editor (Shown when editing / creating) -->
+    <section id="editor-panel" class="editor-pane hidden">
+      <div class="editor-top">
+        <input type="text" id="editor-name" class="editor-title-input" placeholder="Script Name" value="Untitled">
+        <button class="icon-btn" id="btn-editor-close" title="Close" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="editor-meta-grid">
+        <div class="meta-field">
+          <label for="editor-match-type">Match</label>
+          <select id="editor-match-type" class="select-flat">
+            <option value="domain">Domain</option>
+            <option value="pattern">URL Pattern</option>
+            <option value="regex">Regex</option>
+          </select>
+        </div>
+        <div class="meta-field">
+          <label for="editor-run-at">Run At</label>
+          <select id="editor-run-at" class="select-flat">
+            <option value="document_start">Start</option>
+            <option value="document_idle">Idle</option>
+            <option value="document_end">DOM Ready</option>
+            <option value="manual">Manual</option>
+          </select>
+        </div>
+        <div class="meta-field full-width">
+          <label for="editor-matches">Target URLs / Domains</label>
+          <input type="text" id="editor-matches" class="input-flat" placeholder="e.g. *.example.com, sub.site.com or *">
+        </div>
+        <div class="meta-checkbox full-width">
+          <label class="checkbox-row">
+            <input type="checkbox" id="editor-all-frames">
+            <span>Run in all subframes</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="editor-code-container">
+        <textarea id="editor-code" class="code-textarea" placeholder="// JavaScript user script code here..." spellcheck="false"></textarea>
+      </div>
+
+      <div class="editor-bottom-bar">
+        <button class="btn-subtle-danger" id="btn-delete">Delete</button>
+        <div class="bottom-bar-right">
+          <button class="btn-ghost" id="btn-run">▶ Run</button>
+          <button class="btn-solid" id="btn-save">Save</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

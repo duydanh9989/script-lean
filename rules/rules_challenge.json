@@ -1,0 +1,20 @@
+[
+  {
+    "id": 60,
+    "priority": 5,
+    "action": { "type": "allow" },
+    "condition": {
+      "requestDomains": ["challenges.cloudflare.com"],
+      "resourceTypes": ["main_frame", "sub_frame", "script", "image", "stylesheet", "font", "media", "xmlhttprequest", "ping", "websocket", "other"]
+    }
+  },
+  {
+    "id": 61,
+    "priority": 5,
+    "action": { "type": "allow" },
+    "condition": {
+      "urlFilter": "/cdn-cgi/challenge-platform/",
+      "resourceTypes": ["main_frame", "sub_frame", "script", "image", "stylesheet", "font", "media", "xmlhttprequest", "ping", "websocket", "other"]
+    }
+  }
+]

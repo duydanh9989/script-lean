@@ -1,0 +1,16 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Dev artifacts never published
+_backups/
+.backups/
+dist/
+_metadata/
+*.log
+node_modules/

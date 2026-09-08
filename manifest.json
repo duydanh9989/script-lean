@@ -1,0 +1,79 @@
+{
+  "manifest_version": 3,
+  "name": "Script Lean",
+  "version": "2.5.2",
+  "description": "High-performance JS injector with DNR network blocking, anti-adblock defuser, and surrogate stubs",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "alarms",
+    "scripting",
+    "userScripts",
+    "webNavigation",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "rules_core",
+        "enabled": true,
+        "path": "rules/rules_core.json"
+      },
+      {
+        "id": "rules_adnetworks",
+        "enabled": true,
+        "path": "rules/rules_adnetworks.json"
+      },
+      {
+        "id": "rules_telemetry",
+        "enabled": true,
+        "path": "rules/rules_telemetry.json"
+      },
+      {
+        "id": "rules_superadblock",
+        "enabled": true,
+        "path": "rules/rules_superadblock.json"
+      },
+      {
+        "id": "rules_challenge",
+        "enabled": true,
+        "path": "rules/rules_challenge.json"
+      },
+      {
+        "id": "rules_aggressive",
+        "enabled": false,
+        "path": "rules/rules_aggressive.json"
+      }
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "filters/*.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

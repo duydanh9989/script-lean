@@ -1,0 +1,102 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Script Lean — AGGRESSIVE cosmetic layer (v2.5.0, rides the Aggressive chip)
+   Broader generic element-hiding than cosmetic.css. May over-match by design
+   (user-approved trade-off); the SAFE layer in cosmetic.css is untouched.
+   Note: CSS can hide before render — this file complements filters/aggressive.js
+   which also collapses empty parent wrappers the CSS rules leave behind.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Keep core structures alive even against generic patterns */
+nav, header, #ybar, .ybar-enabled,
+nav *, header * {
+  /* anchor rule — real protection via :not() guards on the hide rules below */
+}
+
+/* ── 1. GENERIC AD-ISH CLASS/ID PATTERNS ─────────────────────────────────── */
+[class*="advert" i]:not(html):not(body):not(nav):not(header):not(nav *):not(header *),
+[id*="advert" i]:not(html):not(body):not(nav):not(header):not(nav *):not(header *),
+[class*="ads-" i]:not(html):not(body):not(nav):not(header),
+[class*="-ads" i]:not(html):not(body):not(nav):not(header),
+[id*="ads-" i]:not(html):not(body):not(nav):not(header),
+[id*="-ads" i]:not(html):not(body):not(nav):not(header),
+[class*="ad-slot" i]:not(nav):not(header),
+[class*="adbox" i]:not(nav):not(header),
+[class*="ad_banner" i],
+[class*="adbanner" i],
+[class*="adsense" i]:not(nav):not(header),
+[id*="adsense" i]:not(nav):not(header),
+.ad-placeholder,
+.ad-slot-container,
+.sponsored-slot,
+.sponsored-widget,
+[data-ad-width],
+[data-adzone],
+[data-adunit],
+[data-testid*="ad-slot" i],
+[data-testid*="advertisement" i],
+[aria-label="Advertisement" i] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ── 2. BROAD AD IFRAME URL PATTERNS ─────────────────────────────────────── */
+iframe[src*="/pagead/"],
+iframe[src*="/adsbygoogle"],
+iframe[src*="/adframe"],
+iframe[src*="/adserver"],
+iframe[src*="/ads.js"],
+iframe[src*="/ad.js"],
+iframe[src*="/adbanner"],
+iframe[src*="/adx."],
+iframe[src*="/banners/"],
+iframe[src*="/banner_ad"],
+iframe[src*="/adunit"],
+iframe[src*="/ad-unit"],
+iframe[src*="/prebid"],
+iframe[src*="/gpt.js"],
+iframe[src*="/pubads_impl"],
+iframe[src*="/apstag"],
+iframe[src*="ad.doubleclick"],
+iframe[src*="googlesyndication"],
+iframe[src*="amazon-adsystem"],
+iframe[src*="adservice.google"],
+iframe[src*="media.net"],
+iframe[src*="popads"],
+iframe[src*="propellerads"],
+iframe[src*="adsterra"],
+iframe[src*="adcash"],
+iframe[src*="mgid"],
+iframe[src*="revcontent"],
+iframe[src*="hilltopads"],
+iframe[src*="galaksion"],
+iframe[src*="ad-maven"],
+iframe[src*="teads"],
+iframe[src*="sharethrough"],
+iframe[src*="yieldmo"],
+iframe[src*="spotxchange"],
+iframe[src*="springserve"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  border: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ── 3. COMMON RESERVED-SIZE EMPTY SLOTS (aggressive placeholder sweep) ──── */
+div[class*="ad" i][data-empty="true"],
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+}

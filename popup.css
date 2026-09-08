@@ -1,0 +1,845 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Script Lean — Modern Technical Light Architecture
+   - Clean slate/white neutral canvas (No harsh pure #000 / #fff, balanced contrast)
+   - Accent: Pure Electric Indigo / Sky Blue (#2563eb / #0284c7) — NO GREEN
+   - Clean, crisp borders and high legibility typography
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-control: #f1f5f9;
+  --bg-control-hover: #e2e8f0;
+
+  --border-subtle: #e2e8f0;
+  --border-active: #cbd5e1;
+  --border-focus: #3b82f6;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --accent-active: #2563eb;
+  --accent-active-bg: rgba(37, 99, 235, 0.08);
+  --accent-active-border: rgba(37, 99, 235, 0.35);
+
+  --accent-danger: #ef4444;
+  --accent-danger-bg: rgba(239, 68, 68, 0.08);
+
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 340px;
+  /* v2.5.1 FIX: FIXED height. The old min-height:420px/max-height:580px let
+     the popup window resize AFTER first paint every time async content
+     landed (list render, banner, accordion) — the toolbar popup visibly
+     jumped/flickered on open and on every toggle. A constant height keeps
+     the window geometry stable; internal sections scroll instead. */
+  height: 540px;
+  overflow-y: auto;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.45;
+  user-select: none;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 540px; /* matches the fixed body height — no reflow after paint */
+  min-height: 540px;
+  padding: 12px;
+  gap: 10px;
+  position: relative;
+}
+
+/* ── 1. TOP BAR ──────────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.target-scope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 260px;
+}
+
+.scope-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-active);
+  flex-shrink: 0;
+}
+
+.scope-host {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.icon-btn:hover {
+  background-color: var(--bg-control-hover);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+/* v2.5.0: pressed state for the JS-counter badge toggle */
+.icon-btn.active {
+  background-color: var(--accent-active-bg);
+  border-color: var(--accent-active-border);
+  color: var(--accent-active);
+}
+
+/* v2.5.1: the GitHub anchor reuses .icon-btn — strip link chrome */
+.icon-link {
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.icon-link:hover {
+  color: var(--text-primary);
+}
+
+.icon-btn-subtle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 3px;
+}
+
+.icon-btn-subtle:hover {
+  color: var(--text-primary);
+}
+
+/* ── 2. ENGINE NOTICE BANNER ─────────────────────────────────────────────── */
+.notice-banner {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 11px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notice-banner.hidden {
+  display: none !important;
+}
+
+.notice-icon {
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.notice-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* v2.5.1: actionable buttons inside the engine banner */
+.notice-btn {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.notice-btn:hover {
+  background-color: #1e40af;
+}
+
+.notice-x {
+  background: transparent;
+  border: none;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-size: 10px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.notice-x:hover {
+  color: #0f172a;
+}
+
+/* ── 3. PRESETS BAR ──────────────────────────────────────────────────────── */
+.presets-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.preset-chip {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+
+.preset-chip:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.preset-chip.active {
+  background-color: var(--accent-active-bg);
+  border-color: var(--accent-active-border);
+  color: var(--accent-active);
+}
+
+.preset-chip.active .preset-state {
+  color: var(--accent-active);
+  font-weight: 700;
+}
+
+.preset-name {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.preset-state {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ── 4. SCRIPT SECTION & LIST ────────────────────────────────────────────── */
+.script-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.script-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.script-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  padding: 6px 8px;
+  cursor: pointer;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.script-item:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-active);
+}
+
+/* v2.4 FIX: styles referenced by popup.js but missing from this sheet —
+   disabled rows, the script-info wrapper, name row, meta line, and the
+   "active" match badge rendered unstyled (or invisibly) before. */
+.script-item.disabled {
+  opacity: 0.55;
+}
+
+.script-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  cursor: pointer;
+}
+
+.script-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.match-badge {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-active);
+  background-color: var(--accent-active-bg);
+  border: 1px solid var(--accent-active-border);
+  border-radius: 3px;
+  padding: 0 4px;
+  line-height: 14px;
+  flex-shrink: 0;
+}
+
+.script-meta {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.script-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.script-match {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background-color: #cbd5e1;
+  border-radius: 16px;
+  transition: background-color 0.15s ease;
+}
+
+.toggle-slider::before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toggle input:checked + .toggle-slider {
+  background-color: var(--accent-active);
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(12px);
+}
+
+.empty-state {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-subtle);
+  background-color: var(--bg-surface);
+  border-radius: 6px;
+}
+
+/* ── 5. FILTER LISTS ACCORDION ───────────────────────────────────────────── */
+.rulesets-section {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 8px;
+}
+
+.rulesets-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.rulesets-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.rulesets-summary::-webkit-details-marker {
+  display: none;
+}
+
+.rulesets-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.filterlist-add-row {
+  display: flex;
+  gap: 6px;
+}
+
+.input-flat {
+  flex: 1;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 8px;
+  height: 26px;
+  outline: none;
+}
+
+.input-flat:focus {
+  border-color: var(--border-focus);
+}
+
+.btn-flat {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 10px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.btn-flat:hover {
+  background-color: var(--bg-control);
+  border-color: var(--border-active);
+}
+
+.filterlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 90px;
+  overflow-y: auto;
+}
+
+.fl-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+}
+
+.fl-url {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  max-width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fl-rules {
+  color: var(--text-muted);
+  font-size: 9.5px;
+}
+
+.fl-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.fl-remove:hover {
+  color: var(--accent-danger);
+}
+
+/* v2.4 FIX: popup.js emits filterlist-item / fl-title / fl-count — this
+   sheet only styled the legacy .fl-item / .fl-url / .fl-rules trio, so
+   subscription rows rendered without layout. Both sets now work. */
+.filterlist-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+}
+
+.filterlist-item.disabled,
+.fl-item.disabled {
+  opacity: 0.55;
+}
+
+.fl-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10.5px;
+}
+
+.fl-count {
+  color: var(--text-muted);
+  font-size: 9.5px;
+  flex-shrink: 0;
+}
+
+/* ── 6. SCRIPT EDITOR PANE ───────────────────────────────────────────────── */
+.editor-pane {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-canvas);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+}
+
+.editor-pane.hidden {
+  display: none !important;
+}
+
+.editor-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.editor-title-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 0;
+  outline: none;
+}
+
+.editor-title-input:focus {
+  border-color: var(--border-focus);
+}
+
+.editor-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.meta-field label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.select-flat {
+  background-color: var(--bg-control);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 11px;
+  padding: 3px 6px;
+  height: 24px;
+  outline: none;
+}
+
+.meta-checkbox {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.editor-code-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 180px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px;
+  outline: none;
+  resize: none;
+}
+
+.code-textarea:focus {
+  border-color: var(--border-focus);
+}
+
+.editor-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.bottom-bar-right {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-solid {
+  background-color: var(--accent-active);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.btn-solid:hover {
+  opacity: 0.9;
+}
+
+.btn-ghost {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background-color: var(--bg-control);
+  border-color: var(--border-active);
+}
+
+.btn-subtle-danger {
+  background: transparent;
+  color: var(--accent-danger);
+  border: none;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.btn-subtle-danger:hover {
+  text-decoration: underline;
+}
+
+/* Toast notifications — v2.5.1 FIX: the popup used to inline-style the toast
+   with var(--danger)/var(--accent) (variables that never existed in this
+   sheet) → an INVALID background rendered it fully transparent. All toast
+   styling now lives here with REAL variables, plus the previously missing
+   toast-in keyframes. */
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.toast {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 9999;
+  pointer-events: none;
+  background: var(--text-primary);
+  border: 1px solid var(--border-active);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: toast-in 0.18s ease;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast--error {
+  background: var(--accent-danger);
+  border-color: var(--accent-danger);
+}
+
+/* ── v2.4.3: Custom filter rules editor ─────────────────────────────── */
+.custom-rules-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.custom-rules-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.custom-rules-area {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 64px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  background: var(--bg-control);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.custom-rules-area:focus {
+  border-color: var(--border-focus);
+  background: var(--bg-surface);
+}
+
+.custom-rules-area::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}

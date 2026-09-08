@@ -1,0 +1,163 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Script Injector Lean — Complete Cosmetic Ad Filter & Anti-Adblock Defuser
+   100% rules preserved. Fixed body scroll & DOM position conflict.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. ANTI-ADBLOCK DEFUSER & OVERLAY KILLER ────────────────────────────── */
+[id*="adblock-notice"],
+[id*="adblock-modal"],
+[id*="adblock-overlay"],
+[id*="adblock-dialog"],
+[id*="adblock-popup"],
+[id*="anti-adblock"],
+[id*="antiadblock"],
+[id*="adblocker-detected"],
+[id*="blocking-container"],
+[id^="sp_message_container"],
+[class*="adblock-modal"],
+[class*="adblock-overlay"],
+[class*="adblock-banner"],
+[class*="adblock-warning"],
+[class*="adblock-notice"],
+[class*="adblock-backdrop"],
+[class*="anti-adblock"],
+[class*="antiadblock"],
+[class*="adblocker-detected"],
+.fc-ab-root,
+.sp_veil,
+.ad-blocker-notice,
+.adblock-blocker,
+.modal-adblock,
+.adblock_box,
+.adb-detected,
+.adblock-gate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  clip: rect(0, 0, 0, 0) !important;
+  height: 0 !important;
+  width: 0 !important;
+  z-index: -9999 !important;
+}
+
+/* ── 2. SCROLL RESTORATION (Scoped strictly to anti-adblock classes) ─────── */
+body.adblock-active,
+html.adblock-active,
+body.has-adblock-notice,
+html.has-adblock-notice {
+  overflow: auto !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  pointer-events: auto !important;
+}
+
+/* ── 3. GOOGLE ADSENSE & DOUBLECLICK ─────────────────────────────────────── */
+ins.adsbygoogle,
+[id^="google_ads"],
+[id^="div-gpt-ad"],
+.gpt-ad,
+[data-ad-slot],
+[data-ad-client],
+iframe[src*="doubleclick.net"],
+iframe[src*="googlesyndication.com"],
+iframe[id^="google_ads"],
+iframe[src*="amazon-adsystem"],
+
+/* ── 4. GENERIC AD CLASS PATTERNS ────────────────────────────────────────── */
+.adbox,
+.ad-box,
+.ad-banner,
+.ad-wrapper,
+.ad-container,
+.ad-slot,
+.ad-unit,
+.ad-placement,
+.banner_ads,
+.adsbox,
+.textads,
+.text-ad,
+.text-ads,
+.sponsored-ad,
+.sponsored-content,
+[class*="ad-leaderboard"],
+[class*="ad-sidebar"],
+[class*="ad-footer"],
+[class*="ad-header"],
+[id*="ad-leaderboard"],
+[id*="ad-sidebar"],
+
+/* ── 5. NATIVE & RETARGETING AD NETWORKS ──────────────────────────────────── */
+.taboola-container,
+[id^="taboola-"],
+#taboola-below-article,
+.OUTBRAIN,
+.outbrain-container,
+[data-outbrain-widget],
+.criteo-ad,
+[id*="criteo"],
+[id^="mnet-adslot"],
+.mgbox,
+[id^="mgid"],
+[id^="M_"],
+[id^="rc-widget"],
+.rc-widget,
+
+/* ── 6. POPUP, OVERLAY & VIDEO ADS ───────────────────────────────────────── */
+.modal-ad,
+.popup-ad,
+.interstitial-ad,
+.overlay-ad,
+.video-ad,
+.preroll-ad,
+[class*="video-ad-"],
+
+/* ── 7. EMPTY AD PLACEHOLDERS ────────────────────────────────────────────── */
+div[style*="width:300px"][style*="height:250px"]:empty,
+div[style*="width:728px"][style*="height:90px"]:empty,
+div[style*="width:160px"][style*="height:600px"]:empty,
+div[style*="width:320px"][style*="height:50px"]:empty,
+
+/* ── 8. YAHOO SPECIFIC AD SLOTS & SPONSORED ITEMS ────────────────────────── */
+li[data-ad-type],
+li:has([data-module="StreamSponsoredContent"]),
+[data-gemini-sponsored],
+.gemini-item,
+div[id^="dfp-ad-"],
+div[data-wf-ca-type="ad"],
+div[id^="YDC-Lead"] [class*="ad-"],
+div[id^="YDC-Col2"] [class*="ad-"],
+div[id^="YDC-Lead"] div[class*="feedback"],
+div[id^="YDC-Lead"] div[class*="gemini"],
+div[id*="ad-slot"],
+div[id*="mrec-ad"],
+div[id*="leaderboard-ad"],
+iframe[src*="gemini.yahoo.com"],
+iframe[src*="ads.yahoo.com"],
+iframe[src*="yahoo.com/ad"],
+
+/* ── 9. v2.5.0 SAFE ADDITIONS (verified ad elements only) ─────────────────── */
+amp-ad,
+amp-embed,
+[aria-label="Advertisement"],
+iframe[id^="google_ads_iframe_"],
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Protect navigation bars & core structures */
+header#ybar,
+#ybar,
+.ybar-enabled {
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  opacity: 1 !important;
+}
